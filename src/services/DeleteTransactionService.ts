@@ -1,8 +1,28 @@
-// import AppError from '../errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import AppError from '../errors/AppError';
+import TransactionsRepository from '../repositories/TransactionsRepository';
 
+interface Request {
+  id: string;
+}
 class DeleteTransactionService {
-  public async execute(): Promise<void> {
-    // TODO
+  public async execute({ id }: Request): Promise<void> {
+    try {
+      const repository = getCustomRepository(TransactionsRepository);
+      const transaction = await repository.findOne(id);
+
+      if (!transaction) {
+        throw new AppError('Couldnt delete transaction');
+      }
+
+      await repository.delete(id);
+
+      return;
+
+      // await repository.remove(transaction);
+    } catch (error) {
+      throw new AppError('Couldnt delete transaction');
+    }
   }
 }
 
