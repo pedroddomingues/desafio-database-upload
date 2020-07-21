@@ -18,8 +18,6 @@ class DeleteTransactionService {
       await repository.delete(id);
 
       return;
-
-      // await repository.remove(transaction);
     } catch (error) {
       throw new AppError('Couldnt delete transaction');
     }
